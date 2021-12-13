@@ -114,6 +114,17 @@ class Firewall_rules(ConfigBase):
             result["gathered"] = changed_firewall_rules_facts
 
         result["warnings"] = warnings
+
+        if self.state in self.ACTION_STATES and self._module._diff:
+            result["diff"] = {
+                "after": "\n".join(
+                    sorted(self.set_state(self._module.params["config"], {}))
+                ),
+                "before": "\n".join(
+                    sorted(self.set_state(existing_firewall_rules_facts, {}))
+                ),
+            }
+
         return result
 
     def set_config(self, existing_firewall_rules_facts):

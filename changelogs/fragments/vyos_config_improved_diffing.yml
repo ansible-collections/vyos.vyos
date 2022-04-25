@@ -1,0 +1,3 @@
+---
+minor_changes:
+  - vyos_config - Added new `match`-value `smart` with updated configuration diffing for more reproducible provisioning of devices.

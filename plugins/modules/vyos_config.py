@@ -83,6 +83,25 @@ options:
       is ignored.
     default: configured by vyos_config
     type: str
+  confirm:
+    description:
+    - The C(confirm) argument will tell vyos to revert to the previous configuration
+      if not explicitly confirmed after applying the new config. When set to C(automatic)
+      this module will automatically confirm the configuration, if the current session
+      remains working with the new config. When set to C(manual), this module does
+      not issue the confirmation itself.
+    type: str
+    default: none
+    choices:
+    - automatic
+    - manual
+    - none
+  confirm_timeout:
+    description:
+    - Minutes to wait for confirmation before reverting the configuration. Does
+      not apply when C(confirm) is set to C(none) .
+    type: int
+    default: 10
   config:
     description:
     - The C(config) argument specifies the base configuration to use to compare against
@@ -140,6 +159,11 @@ EXAMPLES = """
 - name: render a Jinja2 template onto the VyOS router
   vyos.vyos.vyos_config:
     src: vyos_template.j2
+
+- name: revert after ten minutes, if connection is lost
+  vyos.vyos.vyos_config:
+    src: vyos_template.j2
+    confirm: yes
 
 - name: for idempotency, use full-form commands
   vyos.vyos.vyos_config:
@@ -309,10 +333,15 @@ def run(module, result):
 
     commit = not module.check_mode
     comment = module.params["comment"]
+    confirm = None
+    if module.params["confirm"] == "automatic" or module.params["confirm"] == "manual":
+        confirm = module.params["confirm_timeout"]
 
     diff = None
     if commands:
-        diff = load_config(module, commands, commit=commit, comment=comment)
+        diff = load_config(module, commands, commit=commit, comment=comment, confirm=confirm)
+        if module.params["confirm"] == "automatic":
+            run_commands(module, ["configure", "confirm", "exit"])
 
         if result.get("filtered"):
             result["warnings"].append(
@@ -333,6 +362,8 @@ def main():
         lines=dict(type="list", elements="str"),
         match=dict(default="line", choices=["line", "none"]),
         comment=dict(default=DEFAULT_COMMENT),
+        confirm=dict(choices=["automatic", "manual", "none"], default='none'),
+        confirm_timeout=dict(type="int", default=10),
         config=dict(),
         backup=dict(type="bool", default=False),
         backup_options=dict(type="dict", options=backup_spec),

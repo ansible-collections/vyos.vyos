@@ -91,12 +91,12 @@ def run_commands(module, commands, check_rc=True):
     return response
 
 
-def load_config(module, commands, commit=False, comment=None):
+def load_config(module, commands, commit=False, comment=None, confirm=None):
     connection = get_connection(module)
 
     try:
         response = connection.edit_config(
-            candidate=commands, commit=commit, comment=comment
+            candidate=commands, commit=commit, comment=comment, confirm=confirm
         )
     except ConnectionError as exc:
         module.fail_json(msg=to_text(exc, errors="surrogate_then_replace"))

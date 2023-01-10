@@ -433,10 +433,27 @@ class Firewall_interfaces(ConfigBase):
         :param opr: operation flag.
         :return: generated command.
         """
-        if not opr:
-            cmd = "delete interfaces ethernet" + " " + name + " firewall"
+
+        #Append vif if interface contains a dot
+        vlan = None 
+        interface_real = name
+        if '.' in name: 
+            interface_real, vlan = name.split('.')
+
+        if vlan is not None:
+            interface_real = interface_real + " vif " + vlan
+
+        #if interface name is bondX, then it's a bonding interface. Everything else is an ethernet
+        if 'bond' in interface_real:
+            iftype = 'bonding'
         else:
-            cmd = "set interfaces ethernet" + " " + name + " firewall"
+            iftype = 'ethernet'
+
+        if not opr:
+            cmd = "delete interfaces " + iftype  + " " + interface_real + " firewall"
+        else:
+            cmd = "set interfaces " + iftype  + " " + interface_real + " firewall"
+
         if attrib:
             cmd += " " + attrib
         if afi:

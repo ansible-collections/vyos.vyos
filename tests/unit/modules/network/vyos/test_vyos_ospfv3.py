@@ -98,10 +98,10 @@ class TestVyosOspfv3Module(TestVyosModule):
                                 dict(address="2001:db20::/32"),
                                 dict(address="2001:db30::/32"),
                             ],
+                            interfaces=[dict(name="eth0")],
                         ),
                         dict(
-                            area_id="3",
-                            range=[dict(address="2001:db40::/32")],
+                            area_id="3", range=[dict(address="2001:db40::/32")]
                         ),
                     ],
                 ),
@@ -115,6 +115,7 @@ class TestVyosOspfv3Module(TestVyosModule):
             "set protocols ospfv3 area 2 range 2001:db20::/32",
             "set protocols ospfv3 area 2 range 2001:db30::/32",
             "set protocols ospfv3 area '2'",
+            "set protocols ospfv3 area 2 interface eth0",
             "set protocols ospfv3 area 2 export-list export1",
             "set protocols ospfv3 area 2 import-list import1",
             "set protocols ospfv3 area '3'",
@@ -141,7 +142,7 @@ class TestVyosOspfv3Module(TestVyosModule):
                             area_id="13",
                             range=[dict(address="2001:db44::/32")],
                         ),
-                    ],
+                    ]
                 ),
                 state="merged",
             )
@@ -240,7 +241,7 @@ class TestVyosOspfv3Module(TestVyosModule):
                             area_id="13",
                             range=[dict(address="2001:db44::/32")],
                         ),
-                    ],
+                    ]
                 ),
                 state="replaced",
             )
@@ -270,7 +271,7 @@ class TestVyosOspfv3Module(TestVyosModule):
                     ],
                 },
                 {"area_id": "13", "range": [{"address": "2001:db44::/32"}]},
-            ],
+            ]
         }
         self.assertEqual(sorted(gather_dict), sorted(result["gathered"]))
 
@@ -322,8 +323,7 @@ set protocols ospfv3 redistribute 'bgp'"""
                             ],
                         ),
                         dict(
-                            area_id="3",
-                            range=[dict(address="2001:db40::/32")],
+                            area_id="3", range=[dict(address="2001:db40::/32")]
                         ),
                     ],
                 ),

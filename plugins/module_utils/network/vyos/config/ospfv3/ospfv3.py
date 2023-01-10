@@ -40,14 +40,9 @@ class Ospfv3(ConfigBase):
     The vyos_ospfv3 class
     """
 
-    gather_subset = [
-        "!all",
-        "!min",
-    ]
+    gather_subset = ["!all", "!min"]
 
-    gather_network_resources = [
-        "ospfv3",
-    ]
+    gather_network_resources = ["ospfv3"]
 
     def __init__(self, module):
         super(Ospfv3, self).__init__(module)
@@ -277,10 +272,12 @@ class Ospfv3(ConfigBase):
         name = {
             "redistribute": "route_type",
             "range": "address",
+            "interface": "name",
         }
         leaf_dict = {
             "redistribute": ("route_map", "route_type"),
             "range": ("address", "advertise", "not_advertise"),
+            "interface": ("name"),
         }
         leaf = leaf_dict[attr]
         w = want.get(attr) or []
@@ -301,7 +298,7 @@ class Ospfv3(ConfigBase):
                         and key in leaf
                         and not _is_w_same(w_item, h_item, key)
                     ):
-                        if key == "route_type" or (
+                        if key in ["route_type", "name"] or (
                             key == "address"
                             and "advertise" not in w_item
                             and "not-advertise" not in w_item
@@ -332,7 +329,7 @@ class Ospfv3(ConfigBase):
                     elif (
                         not opr and key in leaf and not _in_target(h_item, key)
                     ):
-                        if key in ("route_type", "address"):
+                        if key in ("route_type", "address", "name"):
                             commands.append(cmd + attr + " " + str(val))
                         else:
                             commands.append(
@@ -411,6 +408,12 @@ class Ospfv3(ConfigBase):
                             ):
                                 commands.append(cmd + val + " " + key)
                         elif key == "range":
+                            commands.extend(
+                                self._render_list_dict_param(
+                                    key, w_area, h_area, cmd, opr
+                                )
+                            )
+                        elif key == "interface":
                             commands.extend(
                                 self._render_list_dict_param(
                                     key, w_area, h_area, cmd, opr

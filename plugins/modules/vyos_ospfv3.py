@@ -61,6 +61,15 @@ options:
           import_list:
             description: Name of import-list.
             type: str
+          interface:
+            description: OSPFV3 interfaces.
+            aliases: ['interfaces']
+            type: list
+            elements: dict
+            suboptions:
+              name:
+                description: Interface name.
+                type: str
           range:
             description: Summarize routes matching prefix (border routers only).
             type: list

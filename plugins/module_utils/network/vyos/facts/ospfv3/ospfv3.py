@@ -124,6 +124,10 @@ class Ospfv3Facts(object):
         rule = self.parse_attrib(conf, "area_id", match=area_id)
         r_sub = {"range": self.parse_attrib_list(conf, "range", "address")}
         rule.update(r_sub)
+        r_int = {
+            "interface": self.parse_attrib_list(conf, "interface", "name")
+        }
+        rule.update(r_int)
         return rule
 
     def parse_attrib(self, conf, param, match=None):
@@ -136,6 +140,7 @@ class Ospfv3Facts(object):
             "area_id": ["export_list", "import_list"],
             "redistribute": ["route_map"],
             "range": ["advertise", "not_advertise"],
+            "interface": ["name"],
             "parameters": ["router_id"],
         }
         cfg_dict = self.parse_attr(conf, param_lst[param], match)

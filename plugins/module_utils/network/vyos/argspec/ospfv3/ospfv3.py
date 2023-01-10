@@ -45,6 +45,12 @@ class Ospfv3Args(object):  # pylint: disable=R0903
                         "area_id": {"type": "str"},
                         "export_list": {"type": "str"},
                         "import_list": {"type": "str"},
+                        "interface": {
+                            "aliases": ["interfaces"],
+                            "type": "list",
+                            "elements": "dict",
+                            "options": {"name": {"type": "str"}},
+                        },
                         "range": {
                             "elements": "dict",
                             "options": {

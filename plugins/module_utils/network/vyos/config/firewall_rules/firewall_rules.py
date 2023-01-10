@@ -419,6 +419,10 @@ class Firewall_rules(ConfigBase):
                                         afi, name, key, w, opr=opr
                                     )
                                 )
+                            elif key == "destination" or key == "source":
+                                commands.extend(
+                                    self._add_src_or_dest(key, w, h, cmd, opr)
+                                )
                         elif key == "p2p":
                             commands.extend(self._add_p2p(key, w, h, cmd, opr))
                         elif key == "tcp":

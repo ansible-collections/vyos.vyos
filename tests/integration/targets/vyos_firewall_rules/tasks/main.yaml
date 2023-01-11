@@ -1,4 +1,7 @@
 ---
+- include_role:
+    name: prepare_vyos_tests
+
 - include: cli.yaml
   tags:
     - network_cli

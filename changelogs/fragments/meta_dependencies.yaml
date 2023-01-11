@@ -1,0 +1,3 @@
+---
+trivial:
+  - Replace meta/main.yaml support for integration tests with include_role statements.

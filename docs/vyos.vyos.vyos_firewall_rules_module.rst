@@ -813,13 +813,15 @@ Parameters
                     <b>time</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">integer</span>
+                        <span style="color: purple">raw</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Source addresses seen in the last N seconds.</div>
+                        <div>Source addresses seen in the last time period.</div>
+                        <div>Prior to 1.3, this is an integer representing a number of seconds.</div>
+                        <div>After 1.3, this is a string of either &quot;second&quot;, &quot;minute&quot;, or &quot;hour&quot;.</div>
                 </td>
             </tr>
 

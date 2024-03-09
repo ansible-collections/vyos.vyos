@@ -326,6 +326,7 @@ Examples
 
     # Before state:
     # -------------
+    #
     # vyos@vyos:~$ show configuration commands | grep interfaces
     # set interfaces bonding 'bond0'
     # set interfaces bonding 'bond1'
@@ -343,25 +344,26 @@ Examples
     - name: Merge provided configuration with device configuration
       vyos.vyos.vyos_interfaces:
         config:
-        - name: eth2
-          description: Configured by Ansible
-          enabled: true
-          vifs:
-          - vlan_id: 200
-            description: VIF 200 - ETH2
-        - name: eth3
-          description: Configured by Ansible
-          mtu: 1500
-        - name: bond1
-          description: Bond - 1
-          mtu: 1200
-        - name: vti2
-          description: VTI - 2
-          enabled: false
+          - name: eth2
+            description: Configured by Ansible
+            enabled: true
+            vifs:
+              - vlan_id: 200
+                description: VIF 200 - ETH2
+          - name: eth3
+            description: Configured by Ansible
+            mtu: 1500
+          - name: bond1
+            description: Bond - 1
+            mtu: 1200
+          - name: vti2
+            description: VTI - 2
+            enabled: false
         state: merged
 
     # Task Output
     # -----------
+    #
     # before:
     # - enabled: true
     #   name: lo
@@ -417,6 +419,7 @@ Examples
 
     # After state:
     # ------------
+    #
     # vyos@vyos:~$ show configuration commands | grep interfaces
     # set interfaces bonding bond1 description 'Bond - 1'
     # set interfaces bonding bond1 mtu '1200'
@@ -439,10 +442,11 @@ Examples
     # set interfaces vti vti2 description 'VTI - 2'
     # set interfaces vti vti2 disable
 
-
     # Using replaced
+
     # Before state:
     # -------------
+    #
     # vyos:~$ show configuration commands | grep eth
     # set interfaces bonding bond1 description 'Bond - 1'
     # set interfaces bonding bond1 mtu '1400'
@@ -475,16 +479,17 @@ Examples
     - name: Replace device configurations of listed interfaces with provided configurations
       vyos.vyos.vyos_interfaces:
         config:
-        - name: eth2
-          description: Replaced by Ansible
-        - name: eth3
-          description: Replaced by Ansible
-        - name: eth1
-          description: Replaced by Ansible
+          - name: eth2
+            description: Replaced by Ansible
+          - name: eth3
+            description: Replaced by Ansible
+          - name: eth1
+            description: Replaced by Ansible
         state: replaced
 
     # Task Output
     # -----------
+    #
     # before:
     # - description: Bond - 1
     #   enabled: true
@@ -558,6 +563,7 @@ Examples
 
     # After state:
     # ------------
+    #
     # vyos@vyos:~$ show configuration commands | grep interfaces
     # set interfaces bonding bond1 description 'Bond - 1'
     # set interfaces bonding bond1 mtu '1400'
@@ -579,11 +585,11 @@ Examples
     # set interfaces ethernet eth3 hw-id '08:00:27:43:70:8c'
     # set interfaces loopback lo
 
-
     # Using overridden
 
     # Before state:
     # -------------
+    #
     # vyos@vyos:~$ show configuration commands | grep interfaces
     # set interfaces ethernet eth0 address 'dhcp'
     # set interfaces ethernet eth0 address 'dhcpv6'
@@ -613,19 +619,20 @@ Examples
     - name: Overrides all device configuration with provided configuration
       vyos.vyos.vyos_interfaces:
         config:
-        - name: eth0
-          description: Outbound Interface For The Appliance
-          speed: auto
-          duplex: auto
-        - name: eth2
-          speed: auto
-          duplex: auto
-        - name: eth3
-          mtu: 1200
+          - name: eth0
+            description: Outbound Interface For The Appliance
+            speed: auto
+            duplex: auto
+          - name: eth2
+            speed: auto
+            duplex: auto
+          - name: eth3
+            mtu: 1200
         state: overridden
 
     # Task Output
     # -----------
+    #
     # before:
     # - enabled: true
     #   name: lo
@@ -695,6 +702,7 @@ Examples
 
     # After state:
     # ------------
+    #
     # vyos@vyos:~$ show configuration commands | grep interfaces
     # set interfaces ethernet eth0 address 'dhcp'
     # set interfaces ethernet eth0 address 'dhcpv6'
@@ -715,11 +723,11 @@ Examples
     # set interfaces loopback lo
     # set interfaces vti vti1
 
-
     # Using deleted
 
     # Before state:
     # -------------
+    #
     # vyos@vyos:~$ show configuration commands | grep interfaces
     # set interfaces bonding bond0 mtu '1300'
     # set interfaces bonding bond1 description 'LAG - 1'
@@ -748,18 +756,20 @@ Examples
     # set interfaces ethernet eth3 speed '100'
     # set interfaces loopback lo
 
-    - name: Delete attributes of given interfaces (Note - This won't delete the interfaces
+    - name:
+        Delete attributes of given interfaces (Note - This won't delete the interfaces
         themselves)
       vyos.vyos.vyos_interfaces:
         config:
-        - name: bond1
-        - name: eth1
-        - name: eth2
-        - name: eth3
+          - name: bond1
+          - name: eth1
+          - name: eth2
+          - name: eth3
         state: deleted
 
     # Task Output
     # -----------
+    #
     # before:
     # - enabled: true
     #   mtu: 1300
@@ -828,6 +838,7 @@ Examples
 
     # After state:
     # ------------
+    #
     # vyos@vyos:~$ show configuration commands | grep interfaces
     # set interfaces bonding bond0 mtu '1300'
     # set interfaces bonding bond1
@@ -845,11 +856,11 @@ Examples
     # set interfaces ethernet eth3 hw-id '08:00:27:43:70:8c'
     # set interfaces loopback lo
 
-
     # Using gathered
 
     # Before state:
     # -------------
+    #
     # vyos@192# run show configuration commands | grep interfaces
     # set interfaces ethernet eth0 address 'dhcp'
     # set interfaces ethernet eth0 duplex 'auto'
@@ -866,7 +877,7 @@ Examples
     # set interfaces ethernet eth2 mtu '1500'
     # set interfaces ethernet eth2 speed 'auto'
     # set interfaces ethernet eth2 vif 200 description 'VIF - 200'
-    #
+
     - name: Gather listed interfaces with provided configurations
       vyos.vyos.vyos_interfaces:
         config:
@@ -900,38 +911,38 @@ Examples
     #   name: eth0
     #   speed: auto
 
-
     # Using rendered
 
     - name: Render the commands for provided  configuration
       vyos.vyos.vyos_interfaces:
         config:
-        - name: eth0
-          enabled: true
-          duplex: auto
-          speed: auto
-        - name: eth1
-          description: Configured by Ansible - Interface 1
-          mtu: 1500
-          speed: auto
-          duplex: auto
-          enabled: true
-          vifs:
-          - vlan_id: 100
-            description: Eth1 - VIF 100
-            mtu: 400
+          - name: eth0
             enabled: true
-          - vlan_id: 101
-            description: Eth1 - VIF 101
+            duplex: auto
+            speed: auto
+          - name: eth1
+            description: Configured by Ansible - Interface 1
+            mtu: 1500
+            speed: auto
+            duplex: auto
             enabled: true
-        - name: eth2
-          description: Configured by Ansible - Interface 2 (ADMIN DOWN)
-          mtu: 600
-          enabled: false
+            vifs:
+              - vlan_id: 100
+                description: Eth1 - VIF 100
+                mtu: 400
+                enabled: true
+              - vlan_id: 101
+                description: Eth1 - VIF 101
+                enabled: true
+          - name: eth2
+            description: Configured by Ansible - Interface 2 (ADMIN DOWN)
+            mtu: 600
+            enabled: false
         state: rendered
 
     # Task Output
     # -----------
+    #
     # rendered:
     # - set interfaces ethernet eth0 duplex 'auto'
     # - set interfaces ethernet eth0 speed 'auto'
@@ -949,31 +960,29 @@ Examples
     #   DOWN)'
     # - set interfaces ethernet eth2 mtu '600'
 
-
     # Using parsed
 
     - name: Parse the configuration.
       vyos.vyos.vyos_interfaces:
-        running_config:
-          "set interfaces ethernet eth0 address 'dhcp'
-           set interfaces ethernet eth0 duplex 'auto'
-           set interfaces ethernet eth0 hw-id '08:00:27:50:5e:19'
-           set interfaces ethernet eth0 smp_affinity 'auto'
-           set interfaces ethernet eth0 speed 'auto'
-           set interfaces ethernet eth1 description 'Configured by Ansible'
-           set interfaces ethernet eth1 duplex 'auto'
-           set interfaces ethernet eth1 mtu '1500'
-           set interfaces ethernet eth1 speed 'auto'
-           set interfaces ethernet eth1 vif 200 description 'VIF - 200'
-           set interfaces ethernet eth2 description 'Configured by Ansible'
-           set interfaces ethernet eth2 duplex 'auto'
-           set interfaces ethernet eth2 mtu '1500'
-           set interfaces ethernet eth2 speed 'auto'
-           set interfaces ethernet eth2 vif 200 description 'VIF - 200'"
+        running_config: "set interfaces ethernet eth0 address 'dhcp'
+          set interfaces ethernet eth0 duplex 'auto'
+          set interfaces ethernet eth0 hw-id '08:00:27:50:5e:19'
+          set interfaces ethernet eth0 smp_affinity 'auto'
+          set interfaces ethernet eth0 speed 'auto'
+          set interfaces ethernet eth1 description 'Configured by Ansible'
+          set interfaces ethernet eth1 duplex 'auto'
+          set interfaces ethernet eth1 mtu '1500'
+          set interfaces ethernet eth1 speed 'auto'
+          set interfaces ethernet eth1 vif 200 description 'VIF - 200'
+          set interfaces ethernet eth2 description 'Configured by Ansible'
+          set interfaces ethernet eth2 duplex 'auto'
+          set interfaces ethernet eth2 mtu '1500'
+          set interfaces ethernet eth2 speed 'auto'
+          set interfaces ethernet eth2 vif 200 description 'VIF - 200'"
         state: parsed
-
     # Task output
     # -----------
+    #
     # parsed:
     # - description: Configured by Ansible
     #   duplex: auto

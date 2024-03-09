@@ -11,4 +11,4 @@ readme: README.md
 repository: https://github.com/ansible-collections/vyos.vyos
 issues: https://github.com/ansible-collections/vyos.vyos/issues
 tags: [vyos, networking]
-version: 4.1.0
+version: 4.1.1-dev

@@ -184,9 +184,7 @@ class Ospfv3Facts(object):
         return (
             "disable"
             if attrib == "disabled"
-            else "enable"
-            if attrib == "enabled"
-            else attrib.replace("_", "-")
+            else "enable" if attrib == "enabled" else attrib.replace("_", "-")
         )
 
     def is_bool(self, attrib):

@@ -35,7 +35,6 @@ from ansible_collections.vyos.vyos.plugins.module_utils.network.vyos.utils.utils
 
 
 class Ospfv2(ConfigBase):
-
     """
     The vyos_ospfv2 class
     """

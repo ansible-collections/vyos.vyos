@@ -24,7 +24,6 @@ from ansible_collections.vyos.vyos.plugins.module_utils.network.vyos.argspec.osp
 
 
 class Ospfv2Facts(object):
-
     """The vyos ospfv2 fact class"""
 
     def __init__(

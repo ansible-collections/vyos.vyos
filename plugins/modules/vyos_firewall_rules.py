@@ -294,8 +294,10 @@ options:
                     type: int
                   time:
                     description:
-                    - Source addresses seen in the last N seconds.
-                    type: int
+                    - Source addresses seen in the last time period.
+                    - Prior to 1.3, this is an integer representing a number of seconds.
+                    - After 1.3, this is a string of either "second", "minute", or "hour".
+                    type: raw
               source:
                 description:
                 - Source parameters.
